@@ -1,0 +1,4 @@
+# Ignorar las carpetas:
+.vs/
+ASP.NET API_Intro/bin/
+ASP.NET API_Intro/obj/

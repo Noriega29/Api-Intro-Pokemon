@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET API_Intro", "ASP.NET API_Intro\ASP.NET API_Intro.csproj", "{D2EE26C5-5399-440A-BC5C-CBD847252E43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2EE26C5-5399-440A-BC5C-CBD847252E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2EE26C5-5399-440A-BC5C-CBD847252E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2EE26C5-5399-440A-BC5C-CBD847252E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2EE26C5-5399-440A-BC5C-CBD847252E43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CBDD1C7-6017-4DE2-9DB9-17852B9639C0}
+	EndGlobalSection
+EndGlobal
