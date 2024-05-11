@@ -1,0 +1,117 @@
+﻿@model IEnumerable<PokemonViewModel>
+
+@{
+    ViewData["Title"] = "Pokédex";
+}
+
+<table class="table table-hover caption-top">
+    <caption>
+        <div class="row justify-content-between position-vertical-center">
+            <div class="col-6">
+                <h3 class="m-0">
+                    Lista de pokémons
+                </h3>
+            </div>
+            <div class="col-6 position-right">
+                <a asp-action="Create" class="btn btn-primary">Agregar nuevo</a>
+            </div>
+        </div>
+    </caption>
+
+    <thead class="table-dark">
+        <tr class="position-center">
+            <th class="col-auto" style="width: 50px; min-width: 45px; max-width: 50px;">
+                N.°
+            </th>
+            <th class="col-auto">
+                Nombre
+            </th>
+            <th class="col-auto">
+                Tipos
+            </th>
+            <th class="col-auto">
+                Descripcion
+            </th>
+            <th class="col-1 col-xl-2">
+                Acciones
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td class="position-center">
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+
+                <td class="position-vertical-center">
+                    <a asp-action="Details" asp-route-pokemon="@item.Name" style="text-decoration: none; color: black;">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </td>
+
+                <td class="position-center">
+                    @{
+                        /*
+                            var temp1 = item.PokemonsTipos
+                        .Where(p => p.IdPokemon == item.IdPokemon)
+                            .Select(m => m.IdTipo)
+                            .First();
+                            var tipo1 = ViewData[$"{temp1}"]
+                        .ToString();
+
+                            var temp2 = item.PokemonsTipos
+                        .Where(p => p.IdPokemon == item.IdPokemon)
+                            .Select(m => m.IdTipo)
+                            .Last();
+                        var tipo2 = ViewData[$"{temp2}"]
+                            .ToString();
+                        */
+
+                        var countTipos = item.Tipos.Count();
+
+                        if (countTipos == 1)
+                        {
+                            <div class="d-grid gap-2 col-12">
+                                @Html.DisplayFor(modelItem => item.Tipos[0])
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="container">
+                                <div class="row justify-content-around">
+                                    <div class="d-grid gap-2 col-12 col-xl-6">
+                                        @Html.DisplayFor(modelItem => item.Tipos[0])
+                                    </div>
+
+                                    <div class="d-grid gap-2 col-12 col-xl-6">
+                                        @Html.DisplayFor(modelItem => item.Tipos[1])
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </td>
+
+                <td class="position-vertical-center">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+
+                <td class="position-vertical-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="d-grid gap-2 col-12 col-xl-6 p-1">
+                                <a asp-action="Edit" asp-route-id="@item.IdPokemon" class="btn btn-primary btn-sm" type="button">Edit</a>
+                            </div>
+
+                            <div class="d-grid gap-2 col-12 col-xl-6 p-1">
+                                <a asp-action="Delete" asp-route-id="@item.IdPokemon" class="btn btn-danger btn-sm" type="button">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
