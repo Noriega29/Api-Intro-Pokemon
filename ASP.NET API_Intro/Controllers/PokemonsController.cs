@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ASP.NET_API_Intro.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using ASP.NET_API_Intro.Models.ViewModels;
 using ASP.NET_API_Intro.Services;
 
@@ -63,7 +56,7 @@ namespace ASP.NET_API_Intro.Controllers
 
         // POST: api/Pokemons
         [HttpPost]
-        public async Task<ActionResult<Pokemon>> PostPokemon(PokemonViewModel viewModel)
+        public async Task<ActionResult<PokemonViewModel>> PostPokemon(PokemonViewModel viewModel)
         {
             if (viewModel.Tipos.Count <= 0 || viewModel.Tipos.Count >= 3)
             {
