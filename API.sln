@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.NET API_Intro", "ASP.NET API_Intro\ASP.NET API_Intro.csproj", "{D2EE26C5-5399-440A-BC5C-CBD847252E43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokedexServer", "ASP.NET API_Intro\PokedexServer.csproj", "{D2EE26C5-5399-440A-BC5C-CBD847252E43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokedexClient", "PokedexClient\PokedexClient.csproj", "{7B850949-0D2C-4045-90E8-6CF6060F2279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokedexClient", "PokedexClient\PokedexClient.csproj", "{7B850949-0D2C-4045-90E8-6CF6060F2279}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
