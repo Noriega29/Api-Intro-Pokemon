@@ -20,3 +20,46 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.position-horizontal-center {
+    text-align: center;
+}
+
+.position-vertical-center {
+    vertical-align: middle;
+}
+
+.position-center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.position-left {
+    text-align: left;
+}
+
+.position-left-center {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.position-right {
+    text-align: right;
+}
+
+.position-right-center {
+    text-align: right;
+    vertical-align: middle;
+}
+
+.container {
+    margin: 0px;
+}
+
+#suggestionsList {
+    position: absolute;
+    width: 100%;
+    top: 47px;
+    max-height: 411px;
+    overflow-y: auto;
+}
