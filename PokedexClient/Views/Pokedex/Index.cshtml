@@ -53,41 +53,27 @@
 
                 <td class="position-center">
                     @{
-                        /*
-                            var temp1 = item.PokemonsTipos
-                        .Where(p => p.IdPokemon == item.IdPokemon)
-                            .Select(m => m.IdTipo)
-                            .First();
-                            var tipo1 = ViewData[$"{temp1}"]
-                        .ToString();
-
-                            var temp2 = item.PokemonsTipos
-                        .Where(p => p.IdPokemon == item.IdPokemon)
-                            .Select(m => m.IdTipo)
-                            .Last();
-                        var tipo2 = ViewData[$"{temp2}"]
-                            .ToString();
-                        */
-
-                        var countTipos = item.Tipos.Count();
-
-                        if (countTipos == 1)
+                        if (item.Tipos.Count() == 1)
                         {
-                            <div class="d-grid gap-2 col-12">
-                                @Html.DisplayFor(modelItem => item.Tipos[0])
-                            </div>
+                            foreach (var par in item.Tipos)
+                            {
+                                <div class="d-grid gap-2 col-12">
+                                    @Html.DisplayFor(modelItem => par.Value)
+                                </div>
+                            }
                         }
                         else
                         {
                             <div class="container">
                                 <div class="row justify-content-around">
-                                    <div class="d-grid gap-2 col-12 col-xl-6">
-                                        @Html.DisplayFor(modelItem => item.Tipos[0])
-                                    </div>
-
-                                    <div class="d-grid gap-2 col-12 col-xl-6">
-                                        @Html.DisplayFor(modelItem => item.Tipos[1])
-                                    </div>
+                                    @{
+                                        foreach (var par in item.Tipos)
+                                        {
+                                            <div class="d-grid gap-2 col-12 col-xl-6">
+                                                @Html.DisplayFor(modelItem => par.Value)
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         }
