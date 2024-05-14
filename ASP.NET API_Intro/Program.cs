@@ -19,8 +19,10 @@ builder.Services.AddDbContext<PokedexContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DbContext"));
 });
 
-// PokemonViewModel Service Layer 
+// PokemonViewModel Services Layer 
 builder.Services.AddScoped<PokemonViewModelService>();
+// Tipos Services Layer 
+builder.Services.AddScoped<TipoViewModelServices>();
 
 var app = builder.Build();
 
