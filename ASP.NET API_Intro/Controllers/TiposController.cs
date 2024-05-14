@@ -95,16 +95,16 @@ namespace ASP.NET_API_Intro.Controllers
             return NoContent();
         }
 
-        public BadRequestObjectResult BadRequestIncongruent(int id1, int id2)
+        private BadRequestObjectResult BadRequestIncongruent(int id1, int id2)
         {
             return BadRequest(new { message = $"El ID '{id1}' de la Url no coincide con el ID '{id2}' del cuerpo de la solicitud." });
         }
 
-        public BadRequestObjectResult BadRequestExisting(string tipo)
+        private BadRequestObjectResult BadRequestExisting(string tipo)
         {
             return BadRequest(new { message = $"El tipo con el nombre '{tipo}' ya existe." });
         }
-        public NotFoundObjectResult NotFoundTipo(int id)
+        private NotFoundObjectResult NotFoundTipo(int id)
         {
             return NotFound(new { message = $"El tipo con el ID '{id}' no existe." });
         }
