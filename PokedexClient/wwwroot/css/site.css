@@ -52,9 +52,9 @@ body {
     vertical-align: middle;
 }
 
-.container {
+/*.container {
     margin: 0px;
-}
+}*/
 
 #suggestionsList {
     position: absolute;

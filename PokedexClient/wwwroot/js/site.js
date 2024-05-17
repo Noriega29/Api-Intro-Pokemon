@@ -1,4 +1,16 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿// Definir una función llamada activateInputTipo2
+function activateInputTipo2() {
+    // Obtener los elementos con id "check", "select" y guardarlo en variables
+    var checkTipo2 = document.getElementById("checkTipo2");
+    var tipo2 = document.getElementById("tipo2")
+    // Si el elemento check está marcado
+    if (checkTipo2.checked) {
+        // Habilitar el elemento select
+        tipo2.disabled = false;
+    }
+    // Si no
+    else {
+        // Deshabilitar el elemento select
+        tipo2.disabled = true;
+    }
+}

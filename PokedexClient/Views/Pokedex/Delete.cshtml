@@ -1,0 +1,59 @@
+﻿@model Pokemon
+
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
+<h1>¿Borrar éste Pokémon?</h1>
+<h4>@Model.Name</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">
+        N°
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(item => item.Numero)
+    </dd>
+    <dt class="col-sm-2">
+        Pokémon
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(item => item.Name)
+    </dd>
+
+    <dt class="col-sm-2">
+        Tipos
+    </dt>
+
+    @{
+        foreach (var par in Model.Tipos)
+        {
+            <dd class="col-sm-2">
+                @Html.DisplayFor(item => par.Value)
+            </dd>
+        }
+
+        if (Model.Tipos.Count == 1)
+        {
+            <dd class="col-sm-8"></dd>
+        }
+        else
+        {
+            <dd class="col-sm-6"></dd>
+        }
+    }
+
+    <dt class="col-sm-2">
+        Descripción
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(item => item.Description)
+    </dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="IdPokemon" />
+    <input type="submit" value="Borrar" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-outline-primary">Regresar atrás</a>
+</form>
