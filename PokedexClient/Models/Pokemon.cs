@@ -1,6 +1,6 @@
 ﻿namespace PokedexClient.Models
 {
-    public class PokemonViewModel
+    public class Pokemon
     {
         public int IdPokemon { get; set; }
         public int Numero { get; set; }
