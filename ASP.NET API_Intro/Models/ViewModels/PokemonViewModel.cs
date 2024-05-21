@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ASP.NET_API_Intro.Models.ViewModels
+﻿namespace ASP.NET_API_Intro.Models.ViewModels
 {
     public class PokemonViewModel
     {

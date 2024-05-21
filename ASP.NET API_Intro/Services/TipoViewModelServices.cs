@@ -2,6 +2,8 @@
 using ASP.NET_API_Intro.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+using System.Net.Sockets;
 
 namespace ASP.NET_API_Intro.Services
 {
@@ -17,76 +19,85 @@ namespace ASP.NET_API_Intro.Services
         // GET: api/Tipos
         public async Task<ActionResult<IEnumerable<TipoViewModel>>> GetAllTipos()
         {
-            var tipos = await _context.Tipos
+            try
+            {
+                var tipos = await _context.Tipos
                 .AsNoTracking()
                 .OrderBy(t => t.Nombre)
                 .ToListAsync();
 
-            var viewModel = tipos.Select(t => new TipoViewModel
-            {
-                Id = t.IdTipo,
-                Nombre = t.Nombre
-            }).ToList();
+                var viewModel = tipos.Select(t => new TipoViewModel
+                {
+                    Id = t.IdTipo,
+                    Nombre = t.Nombre
+                }).ToList();
 
-            return viewModel;
+                return viewModel;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+            catch (SocketException)
+            {
+                throw;
+            }
         }
 
         // GET: api/Tipos/id
         public async Task<ActionResult<TipoViewModel>> GetTipoById(int id)
         {
-            var tipo = await _context.Tipos
+            try
+            {
+                var tipo = await _context.Tipos
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.IdTipo == id);
 
-            if (tipo == null)
-            {
-                return null;
+                if (tipo == null)
+                {
+                    return null;
+                }
+
+                var viewModel = new TipoViewModel()
+                {
+                    Id = tipo.IdTipo,
+                    Nombre = tipo.Nombre
+                };
+
+                return viewModel;
             }
-
-            var viewModel = new TipoViewModel()
+            catch (MySqlException)
             {
-                Id = tipo.IdTipo,
-                Nombre = tipo.Nombre
-            };
-
-            return viewModel;
-        }
-
-        // GET: api/Tipos/name
-        public async Task<ActionResult<TipoViewModel>> GetTipoByName(string name)
-        {
-            var tipo = await _context.Tipos
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Nombre == name);
-
-            if (tipo == null)
-            {
-                return null;
+                throw;
             }
-
-            var viewModel = new TipoViewModel()
+            catch (SocketException)
             {
-                Id = tipo.IdTipo,
-                Nombre = tipo.Nombre
-            };
-
-            return viewModel;
+                throw;
+            }
         }
 
         // PUT: api/Tipos/id
         public async Task UpdateTipo(int id, TipoViewModel viewModel)
         {
-            var tipo = await _context.Tipos
-                .FirstOrDefaultAsync(t => t.IdTipo == id);
-
-            if (tipo != null)
-            {
-                tipo.Nombre = viewModel.Nombre;
-            }
-
             try
             {
+                var tipo = await _context.Tipos
+                .FirstOrDefaultAsync(t => t.IdTipo == id);
+
+                if (tipo != null)
+                {
+                    tipo.Nombre = viewModel.Nombre;
+                }
+
                 await _context.SaveChangesAsync();
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+            catch (SocketException)
+            {
+                throw;
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -97,22 +108,44 @@ namespace ASP.NET_API_Intro.Services
         // POST: api/Tipos
         public async Task CrearTipo(TipoViewModel viewModel)
         {
-            Tipo tipo = new()
+            try
             {
-                Nombre = viewModel.Nombre
-            };
+                Tipo tipo = new()
+                {
+                    Nombre = viewModel.Nombre
+                };
 
-            await _context.Tipos.AddAsync(tipo);
-            await _context.SaveChangesAsync();
+                await _context.Tipos.AddAsync(tipo);
+                await _context.SaveChangesAsync();
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+            catch (SocketException)
+            {
+                throw;
+            }
         }
 
         // DELETE: api/Tipos/id
         public async Task DeleteTipo(int id)
         {
-            var tipo = await _context.Tipos.FindAsync(id);
+            try
+            {
+                var tipo = await _context.Tipos.FindAsync(id);
 
-            _context.Tipos.Remove(tipo);
-            await _context.SaveChangesAsync();
+                _context.Tipos.Remove(tipo);
+                await _context.SaveChangesAsync();
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
+            catch (SocketException)
+            {
+                throw;
+            }
         }
     }
 }
