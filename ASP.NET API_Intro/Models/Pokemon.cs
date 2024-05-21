@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASP.NET_API_Intro.Models;
+﻿namespace ASP.NET_API_Intro.Models;
 
 public partial class Pokemon
 {
