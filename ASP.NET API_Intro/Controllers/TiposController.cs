@@ -81,7 +81,7 @@ namespace ASP.NET_API_Intro.Controllers
 
                 if (await _find.FindTipoByAnyParameter(nombre: viewModel.Nombre))
                 {
-                    return BadRequest(ApiResponses.Status400ExistingEntityByName("tipo", viewModel.Nombre));
+                    return StatusCode(StatusCodes.Status409Conflict, ApiResponses.Status409ExistingEntityByName("tipo", viewModel.Nombre));
                 }
 
                 await _services.UpdateTipo(id, viewModel);
@@ -114,7 +114,7 @@ namespace ASP.NET_API_Intro.Controllers
 
                 if (await _find.FindTipoByAnyParameter(nombre: viewModel.Nombre))
                 {
-                    return BadRequest(ApiResponses.Status400ExistingEntityByName("tipo", viewModel.Nombre));
+                    return StatusCode(StatusCodes.Status409Conflict, ApiResponses.Status409ExistingEntityByName("tipo", viewModel.Nombre));
                 }
 
                 await _services.CrearTipo(viewModel);
