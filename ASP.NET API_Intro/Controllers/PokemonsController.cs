@@ -77,13 +77,13 @@ namespace ASP.NET_API_Intro.Controllers
                 // Comprueba si existe un Pokémon en la base de datos basándose en el número del pokémon.
                 if (await _find.FindPokemonByAnyParameter(numero: viewModel.Numero))
                 {
-                    return BadRequest(ApiResponses.Status400ExistingPokemonNumber(viewModel.Numero));
+                    return StatusCode(StatusCodes.Status409Conflict, ApiResponses.Status409ExistingPokemonNumber(viewModel.Numero));
                 }
 
                 // Comprueba si existe un Pokémon en la base de datos basándose en el nombre del pokémon.
                 if (await _find.FindPokemonByAnyParameter(nombre: viewModel.Name))
                 {
-                    return BadRequest(ApiResponses.Status400ExistingEntityByName("Pokémon", viewModel.Name));
+                    return StatusCode(StatusCodes.Status409Conflict, ApiResponses.Status409ExistingEntityByName("Pokémon", viewModel.Name));
                 }
 
                 // Comprueba si la cantidad de tipos del pokémon es la correcta.
@@ -134,14 +134,14 @@ namespace ASP.NET_API_Intro.Controllers
                 // y excluyendo los elementos con el ID proporcionado.
                 if (await _find.FindPokemonByANumberOrNameExcludingId(id: id, numero: viewModel.Numero))
                 {
-                    return BadRequest(ApiResponses.Status400ExistingPokemonNumber(viewModel.Numero));
+                    return StatusCode(StatusCodes.Status409Conflict, ApiResponses.Status409ExistingPokemonNumber(viewModel.Numero));
                 }
 
                 // Verificar si existe un pokémon en la base de datos basándote en el nombre.
                 // y excluyendo los elementos con el ID proporcionado.
                 if (await _find.FindPokemonByANumberOrNameExcludingId(id: id, nombre: viewModel.Name))
                 {
-                    return BadRequest(ApiResponses.Status400ExistingEntityByName("Pokémon", viewModel.Name));
+                    return StatusCode(StatusCodes.Status409Conflict, ApiResponses.Status409ExistingEntityByName("Pokémon", viewModel.Name));
                 }
 
                 // Comprobar que la cantidad de tipos del pokemon sea la correcta.

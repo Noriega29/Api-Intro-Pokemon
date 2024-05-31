@@ -14,7 +14,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <summary>
         /// Obtiene o establece el estado de la respuesta.
         /// </summary>
-        public int Status {  get; set; }
+        public string Status {  get; set; }
         /// <summary>
         /// Obtiene o establece el estado de la respuesta.
         /// </summary>
@@ -32,7 +32,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <param name="status">El estado de la respuesta.</param>
         /// <param name="message">El mensaje de la respuesta.</param>
         /// <param name="data">Los datos de la respuesta.</param>
-        public ApiResponses(string title, int status, string message, object? data = null)
+        public ApiResponses(string title, string status, string message, object? data = null)
         {
             Title = title;
             Status = status;
@@ -48,7 +48,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta indicando que la entidad fue creada con éxito.</returns>
         public static ApiResponses Status201CreatedEntity(string entity, object data)
         {
-            return new ApiResponses("Created", 201, $"{entity} creado con éxito.", data);
+            return new ApiResponses("Created", "201x1", $"{entity} creado con éxito.", data);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta indicando que la entidad fue borrada con éxito.</returns>
         public static ApiResponses Status204DeletedEntity(string entity)
         {
-            return new ApiResponses("No Content", 204, $"{entity} borrado con éxito.");
+            return new ApiResponses("No Content", "204x1", $"{entity} borrado con éxito.");
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando la incongruencia de IDs.</returns>
         public static ApiResponses Status400IncongruentId(int uriId, int bodyId)
         {
-            return new ApiResponses("Bad Request", 400, String.Format(ErrorMessages.IncongruentId, uriId, bodyId));
+            return new ApiResponses("Bad Request", "400x1", $"El ID '{uriId}' de la URL no coincide con el ID '{bodyId}' del cuerpo de la solicitud.");
         }
 
         /// <summary>
@@ -78,28 +78,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando que el número del Pokémon no es válido.</returns>
         public static ApiResponses Status400NotValidNumber()
         {
-            return new ApiResponses("Bad Request", 400, ErrorMessages.NotValidNumber);
-        }
-
-        /// <summary>
-        /// Crea una respuesta de error cuando ya existe un Pokémon con el mismo número en la base de datos.
-        /// </summary>
-        /// <param name="id">El número del Pokémon que ya existe.</param>
-        /// <returns>Una respuesta de error indicando que el número del Pokémon ya existe.</returns>
-        public static ApiResponses Status400ExistingPokemonNumber(int id)
-        {
-            return new ApiResponses("Bad Request", 400, String.Format(ErrorMessages.ExistingPokemonNumber, id));
-        }
-
-        /// <summary>
-        /// Crea una respuesta de error cuando ya existe una entidad con el mismo nombre en la base de datos.
-        /// </summary>
-        /// <param name="entity">Es el tipo de entidad existente.</param>
-        /// <param name="name">El nombre de la entidad existente.</param>
-        /// <returns>Una respuesta de error indicando que el nombre de la entidad ya existe.</returns>
-        public static ApiResponses Status400ExistingEntityByName(string entity, string name)
-        {
-            return new ApiResponses("Bad Request", 400, String.Format(ErrorMessages.ExistingEntityByName, entity, name));
+            return new ApiResponses("Bad Request", "400x2", "El número del pokémon en la pokédex debe ser mayor a cero.");
         }
 
         /// <summary>
@@ -108,7 +87,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando que la cantidad de tipos es inválida.</returns>
         public static ApiResponses Status400InvalidTiposCount()
         {
-            return new ApiResponses("Bad Request", 400, ErrorMessages.InvalidTiposCount);
+            return new ApiResponses("Bad Request", "400x3", "El pokémon debe tener al menos un tipo, pero no más de dos.");
         }
 
         /// <summary>
@@ -119,7 +98,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando que la Entidad no se encuentra.</returns>
         public static ApiResponses Status404NotFoundEntity(string entity, int id)
         {
-            return new ApiResponses("Not Found", 404, String.Format(ErrorMessages.NotFoundEntity, entity, id));
+            return new ApiResponses("Not Found", "404x1", $"El {entity} con el ID '{id}' no se encuentra en la base de datos.");
         }
 
         /// <summary>
@@ -128,7 +107,28 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando un problema de concurrencia al intentar actualizar un campo en la base de datos.</returns>
         public static ApiResponses Status409DbUpdateConcurrencyException()
         {
-            return new ApiResponses("Conflict", 409, "Esto sucede cuando varios procesos intentan modificar los mismos datos al mismo tiempo.");
+            return new ApiResponses("Conflict", "409x1", "Esto sucede cuando varios procesos intentan modificar los mismos datos al mismo tiempo.");
+        }
+
+        /// <summary>
+        /// Crea una respuesta de error cuando ya existe un Pokémon con el mismo número en la base de datos.
+        /// </summary>
+        /// <param name="number">El número del Pokémon que ya existe.</param>
+        /// <returns>Una respuesta de error indicando que el número del Pokémon ya existe.</returns>
+        public static ApiResponses Status409ExistingPokemonNumber(int number)
+        {
+            return new ApiResponses("Conflict", "409x2", $"Ya existe un pokémon en la base de datos con el número '{number}'.");
+        }
+
+        /// <summary>
+        /// Crea una respuesta de error cuando ya existe una entidad con el mismo nombre en la base de datos.
+        /// </summary>
+        /// <param name="entity">Es el tipo de entidad existente.</param>
+        /// <param name="name">El nombre de la entidad existente.</param>
+        /// <returns>Una respuesta de error indicando que el nombre de la entidad ya existe.</returns>
+        public static ApiResponses Status409ExistingEntityByName(string entity, string name)
+        {
+            return new ApiResponses("Conflict", "409x3", $"Ya existe un {entity} en la base de datos con el nombre '{name}'.");
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando un problema al conectar con el hosts MySQL.</returns>
         public static ApiResponses Status500MySqlException()
         {
-            return new ApiResponses("Internal Server Error", 500, "No se ha podido conectar a ninguno de los hosts MySQL especificados.");
+            return new ApiResponses("Internal Server Error", "500x1", "No se ha podido conectar a ninguno de los hosts MySQL especificados.");
         }
 
         /// <summary>
@@ -146,25 +146,25 @@ namespace ASP.NET_API_Intro.Helpers
         /// <returns>Una respuesta de error indicando un problema de conexión de red.</returns>
         public static ApiResponses Status500SocketException()
         {
-            return new ApiResponses("Internal Server Error", 500, "No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión.");
+            return new ApiResponses("Internal Server Error", "500x2", "No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión.");
         }
     }
 
-    /// <summary>
-    /// Clase estática que contiene mensajes de error constantes.
-    /// </summary>
-    public static class ErrorMessages
-    {
-        public const string IncongruentId = "El ID '{0}' de la URL no coincide con el ID '{1}' del cuerpo de la solicitud.";
+    ///// <summary>
+    ///// Clase estática que contiene mensajes de error constantes.
+    ///// </summary>
+    //public static class ErrorMessages
+    //{
+    //    public const string IncongruentId = "El ID '{0}' de la URL no coincide con el ID '{1}' del cuerpo de la solicitud.";
 
-        public const string NotFoundEntity = "El {0} con el ID '{1}' no se encuentra en la base de datos.";
+    //    public const string NotFoundEntity = "El {0} con el ID '{1}' no se encuentra en la base de datos.";
 
-        public const string NotValidNumber = "El número del pokémon en la pokédex debe ser mayor a cero.";
+    //    public const string ExistingPokemonNumber = "Ya existe un pokémon en la base de datos con el número '{0}'.";
 
-        public const string ExistingPokemonNumber = "Ya existe un pokémon en la base de datos con el número '{0}'.";
+    //    public const string ExistingEntityByName = "Ya existe un {0} en la base de datos con el nombre '{1}'.";
 
-        public const string ExistingEntityByName = "Ya existe un {0} en la base de datos con el nombre '{1}'.";
+    //    public const string NotValidNumber = "El número del pokémon en la pokédex debe ser mayor a cero.";
 
-        public const string InvalidTiposCount = "El pokémon debe tener al menos un tipo, pero no más de dos.";
-    }
+    //    public const string InvalidTiposCount = "El pokémon debe tener al menos un tipo, pero no más de dos.";
+    //}
 }
