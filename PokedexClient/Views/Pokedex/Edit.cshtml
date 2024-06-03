@@ -6,94 +6,33 @@
 }
 
 <h1>Editar Pokémon</h1>
-
 <hr />
+
 <div class="row">
     <div class="col">
     </div>
 
     <div class="col col-xl-5 col-lg-5 col-md-7 col-sm-9">
-        <form asp-action="Edit">
+        <form asp-action="Edit" class="needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="IdPokemon" />
 
-            <div class="row mb-3">
-                <div class="form-group col-4">
-                    <label asp-for="Numero" class="control-label" for="numero"></label>
-                    <input asp-for="Numero" class="form-control" id="numero" />
-                    <span asp-validation-for="Numero" class="text-danger"></span>
-                </div>
-
-                <div class="form-group col-8">
-                    <label asp-for="Name" class="control-label" for="nombre"></label>
-                    <input asp-for="Name" class="form-control" id="nombre" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="form-group col-6">
-                    <label asp-for="PrimerTipo" class="control-label" for="tipo1"></label>
-                    <select asp-for="PrimerTipo" asp-items="ViewBag.Tipos" class="form-control" id="tipo1"></select>
-                </div>
-
-                <div class="form-group col-6">
-                    @{
-                        if (Model.SegundoTipo != 0)
-                        {
-                            <div class="row justify-content-between g-2">
-                                <div class="col-auto">
-                                    <label asp-for="SegundoTipo" class="control-label" for="tipo2"></label>
-                                </div>
-
-                                <div class="col-2">
-                                    <input id="checkTipo2" class="form-check-input" type="checkbox" checked onchange="activateInputTipo2()">
-                                </div>
-                            </div>
-
-                            <div class="row g-0">
-                                <select id="tipo2" asp-for="SegundoTipo" asp-items="ViewBag.Tipos" class="form-control"></select>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="row justify-content-between g-2">
-                                <div class="col-auto">
-                                    <label asp-for="SegundoTipo" class="control-label" for="tipo2"></label>
-                                </div>
-
-                                <div class="col-2">
-                                    <input id="checkTipo2" class="form-check-input" type="checkbox" onchange="activateInputTipo2()">
-                                </div>
-                            </div>
-
-                            <div class="row g-0">
-                                <select id="tipo2" asp-for="SegundoTipo" asp-items="ViewBag.Tipos" class="form-control" disabled></select>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="form-group col-12">
-                    <label asp-for="Description" class="control-label" for="descripcion"></label>
-                    <textarea asp-for="Description" id="descripcion" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-            </div>
+            <partial name="_FormFilds" />
 
             <div class="row mb-3">
                 <div class="d-grid gap-2">
-                    <input type="submit" value="Editar" class="btn btn-success" />
+                    <button type="submit" class="btn btn-success">
+                        <partial name="~/Views/Shared/Icons/_Pencil-Fill.cshtml" />
+                        Editar Pokémon
+                    </button>
                 </div>
             </div>
 
         </form>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+            <a asp-action="Index" class="btn btn-outline-primary">Ir a la lista</a>
         </div>
     </div>
 

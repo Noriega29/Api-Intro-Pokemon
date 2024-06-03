@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PokedexClient.Helpers;
 using PokedexClient.Models;
 using PokedexClient.Models.ViewModels;
 using PokedexClient.Services;
+using System.Net;
+using System.Net.Sockets;
 
 namespace PokedexClient.Controllers
 {
@@ -20,38 +23,71 @@ namespace PokedexClient.Controllers
         // GET: pokemons/
         public async Task<IActionResult> Index()
         {
-            var response = await _pokemonService.GetPokemonsList();
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var pokemons = await _pokemonService.DeserializePokemonsList(response);
-                return View(pokemons);
+                var response = await _pokemonService.GetPokemonsList();
+                if (response.IsSuccessStatusCode)
+                {
+                    var pokemons = await Deserialize.DeserializePokemonsListAsync(response);
+                    return View(pokemons);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (SocketException)
             {
-                return NotFound();
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
             }
         }
 
         // GET: pokemons/id
         public async Task<IActionResult> Details(int id)
         {
-            var response = await _pokemonService.GetPokemonById(id);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var pokemon = await _pokemonService.DeserializePokemonById(response);
-                return View(pokemon);
+                var response = await _pokemonService.GetPokemonById(id);
+                if (response.IsSuccessStatusCode)
+                {
+                    var pokemon = await Deserialize.DeserializePokemonAsync(response);
+                    return View(pokemon);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (SocketException)
             {
-                return NotFound();
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
             }
         }
 
         // GET: pokemon/
         public async Task<IActionResult> Create()
         {
-            ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
-            return View();
+            try
+            {
+                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
+                return View();
+            }
+            catch (SocketException)
+            {
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
+            }
         }
 
         // POST: pokemon/
@@ -59,53 +95,88 @@ namespace PokedexClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PokemonViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var response = await _pokemonService.CreatePokemon(viewModel);
-                if (response.IsSuccessStatusCode)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction(nameof(Index));
+                    var response = await _pokemonService.CreatePokemon(viewModel);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ErrorApiResponses errorMessage = new ErrorApiResponses();
+                        errorMessage = await Deserialize.DeserializeErrorApiResponseAsync(response);
+
+                        if (response.StatusCode == HttpStatusCode.Conflict)
+                        {
+                            if (errorMessage.Status == "409x2")
+                            {
+                                return View("_PartialViewAlert", AlertMessages.Error409x2(viewModel.Numero));
+                            }
+                            if (errorMessage.Status == "409x3")
+                            {
+                                return View("_PartialViewAlert", AlertMessages.Error409x3(viewModel.Name));
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Ha habido un error al intentar cear el pokemon.");
-                }
+                return View(viewModel);
             }
-            return View(viewModel);
+            catch (SocketException)
+            {
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
+            }
         }
 
         // GET: pokemon/id
         public async Task<IActionResult> Edit(int id)
         {
-            Pokemon pokemon = new Pokemon();
-            var response = await _pokemonService.GetPokemonById(id);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                pokemon = await _pokemonService.DeserializePokemonById(response);
-            }
-            else
-            {
-                return NotFound();
-            }
+                Pokemon pokemon = new Pokemon();
+                var response = await _pokemonService.GetPokemonById(id);
+                if (response.IsSuccessStatusCode)
+                {
+                    pokemon = await Deserialize.DeserializePokemonAsync(response);
+                }
+                else
+                {
+                    return NotFound();
+                }
 
-            List<int> tiposID = new List<int>();
-            foreach (var par in pokemon.Tipos)
-            {
-                tiposID.Add(par.Key);
+                List<int> tiposID = new List<int>();
+                foreach (var par in pokemon.Tipos)
+                {
+                    tiposID.Add(par.Key);
+                }
+
+                PokemonViewModel viewModel = new()
+                {
+                    IdPokemon = pokemon.IdPokemon,
+                    Numero = pokemon.Numero,
+                    Name = pokemon.Name,
+                    PrimerTipo = tiposID[0],
+                    SegundoTipo = tiposID.Count > 1 ? tiposID[1] : 0,
+                    Description = pokemon.Description
+                };
+
+                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
+                return View(viewModel);
             }
-
-            PokemonViewModel viewModel = new()
+            catch (SocketException)
             {
-                IdPokemon = pokemon.IdPokemon,
-                Numero = pokemon.Numero,
-                Name = pokemon.Name,
-                PrimerTipo = tiposID[0],
-                SegundoTipo = tiposID.Count > 1 ? tiposID[1] : 0,
-                Description = pokemon.Description
-            };
-
-            ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
-            return View(viewModel);
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
+            }
         }
 
         // POST: pokemon/id
@@ -113,38 +184,73 @@ namespace PokedexClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PokemonViewModel viewModel)
         {
-            if (id != viewModel.IdPokemon)
+            try
             {
-                return NotFound();
-            }
+                if (id != viewModel.IdPokemon)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                var response = await _pokemonService.EditPokemon(id, viewModel);
-                if (response.IsSuccessStatusCode)
+                if (ModelState.IsValid)
                 {
-                    return RedirectToAction(nameof(Index));
+                    var response = await _pokemonService.EditPokemon(id, viewModel);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ErrorApiResponses errorMessage = new ErrorApiResponses();
+                        errorMessage = await Deserialize.DeserializeErrorApiResponseAsync(response);
+
+                        if (response.StatusCode == HttpStatusCode.Conflict)
+                        {
+                            if (errorMessage.Status == "409x2")
+                            {
+                                return View("_PartialViewAlert", AlertMessages.Error409x2(viewModel.Numero));
+                            }
+                            if (errorMessage.Status == "409x3")
+                            {
+                                return View("_PartialViewAlert", AlertMessages.Error409x3(viewModel.Name));
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Ha habido un error al intentar actualizar el pokemon.");
-                }
+                return View(viewModel);
             }
-            return View(viewModel);
+            catch (SocketException)
+            {
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
+            }
         }
         
         // GET: pokemon/id
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await _pokemonService.GetPokemonById(id);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var pokemon = await _pokemonService.DeserializePokemonById(response);
-                return View(pokemon);
+                var response = await _pokemonService.GetPokemonById(id);
+                if (response.IsSuccessStatusCode)
+                {
+                    var pokemon = await Deserialize.DeserializePokemonAsync(response);
+                    return View(pokemon);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (SocketException)
             {
-                return NotFound();
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
             }
         }
         
@@ -153,8 +259,19 @@ namespace PokedexClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _pokemonService.DeletePokemon(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _pokemonService.DeletePokemon(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (SocketException)
+            {
+                return View("_LostConnection");
+            }
+            catch (HttpRequestException)
+            {
+                return View("_LostConnection");
+            }
         }
     }
 }
