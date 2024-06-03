@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using PokedexClient.Helpers;
 using PokedexClient.Models;
+using System.Net.Sockets;
 
 namespace PokedexClient.Services
 {
@@ -15,16 +17,27 @@ namespace PokedexClient.Services
 
         public async Task<IEnumerable<Tipo>> GetTiposList()
         {
-            var response = await _httpClient.GetAsync("tipos");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var tipos = JsonConvert.DeserializeObject<IEnumerable<Tipo>>(content);
+                var response = await _httpClient.GetAsync("tipos");
 
-                return tipos;
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var tipos = JsonConvert.DeserializeObject<IEnumerable<Tipo>>(content);
+
+                    return tipos;
+                }
+                return (new List<Tipo>());
             }
-            return (new List<Tipo>());
+            catch (SocketException)
+            {
+                throw;
+            }
+            catch (HttpRequestException)
+            {
+                throw;
+            }
         }
     }
 }
