@@ -1,3 +1,4 @@
+using ASP.NET_API_Intro.Helpers;
 using ASP.NET_API_Intro.Models;
 using ASP.NET_API_Intro.Services;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,10 @@ builder.Services.AddDbContext<PokedexContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DbContext"));
 });
 
-// PokemonViewModel Service Layer 
+// Services Layers
 builder.Services.AddScoped<PokemonViewModelService>();
+builder.Services.AddScoped<TipoViewModelServices>();
+builder.Services.AddScoped<FindEntities>();
 
 var app = builder.Build();
 

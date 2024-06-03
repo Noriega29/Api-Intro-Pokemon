@@ -1,0 +1,18 @@
+﻿@model Pokemon
+
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
+<h1>@Model.Name</h1>
+<hr />
+
+<partial name="_DetailsFields" />
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdPokemon" class="btn btn-outline-success">
+        <partial name="~/Views/Shared/Icons/_Pencil-Fill.cshtml" />
+        Editar
+    </a>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+</div>

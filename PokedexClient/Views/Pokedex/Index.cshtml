@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Pokemon>
+
+@{
+    ViewData["Title"] = "Pokédex";
+}
+
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-xl-6">
+        <table class="table table-hover caption-top">
+            <caption>
+                <div class="row justify-content-between position-vertical-center">
+                    <div class="col">
+                        <h3 class="m-0">
+                            Lista de pokémons
+                        </h3>
+                    </div>
+
+                    <div class="col col-md-5 position-right">
+                        <a asp-action="Create" class="btn btn-success">
+                            <partial name="~/Views/Shared/Icons/_Database-Fill-Add.cshtml" />
+                            Agregar Pokémon
+                        </a>
+                    </div>
+                </div>
+            </caption>
+
+            <thead class="table-dark">
+                <tr class="position-center">
+                    <th class="col-1" style="min-width: 65px; width: 75px; max-width: 75px;">
+                        N.°
+                    </th>
+                    <th class="col-4">
+                        Nombre
+                    </th>
+                    <th class="col-4">
+                        Tipos
+                    </th>
+                    <th class="col-3">
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="position-center p-0">
+                            @Html.DisplayFor(modelItem => item.Numero)
+                        </td>
+
+                        <td class="position-vertical-center p-0">
+                            <a asp-action="Details" asp-route-id="@item.IdPokemon" style="text-decoration: none; color: black;">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </a>
+                        </td>
+
+                        <td class="position-center p-0">
+                            @if (item.Tipos.Count() == 1)
+                            {
+                                foreach (var par in item.Tipos)
+                                {
+                                    <div>
+                                        @Html.DisplayFor(modelItem => par.Value)
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="container p-0">
+                                    <div class="row justify-content-around">
+                                        @foreach (var par in item.Tipos)
+                                        {
+                                            <div class="col-12 col-sm-6 p-0">
+                                                @Html.DisplayFor(modelItem => par.Value)
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </td>
+
+                        <td class="p-0">
+                            <div class="container px-3">
+                                <div class="row">
+                                    <div class="d-grid gap-2 col-6 p-1">
+                                        <a asp-action="Edit" asp-route-id="@item.IdPokemon" class="btn btn-primary btn-sm" type="button" style="text-align: center">
+                                            <partial name="~/Views/Shared/Icons/_Pencil-Fill.cshtml" />
+                                        </a>
+                                    </div>
+
+                                    <div class="d-grid gap-2 col-6 p-1">
+                                        <a asp-action="Delete" asp-route-id="@item.IdPokemon" class="btn btn-danger btn-sm" type="button">
+                                            <partial name="~/Views/Shared/Icons/_Trash.cshtml" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-4 col-xl-6">
+    </div>
+</div>

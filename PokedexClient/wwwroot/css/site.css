@@ -1,0 +1,49 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.position-horizontal-center {
+    text-align: center;
+}
+
+.position-vertical-center {
+    vertical-align: middle;
+}
+
+.position-center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.position-left {
+    text-align: left;
+}
+
+.position-left-center {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.position-right {
+    text-align: right;
+}
+
+.position-right-center {
+    text-align: right;
+    vertical-align: middle;
+}

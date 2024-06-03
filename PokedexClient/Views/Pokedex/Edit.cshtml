@@ -1,0 +1,47 @@
+﻿@using PokedexClient.Models.ViewModels
+@model PokemonViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
+<h1>Editar Pokémon</h1>
+<hr />
+
+<div class="row">
+    <div class="col">
+    </div>
+
+    <div class="col col-xl-5 col-lg-5 col-md-7 col-sm-9">
+        <form asp-action="Edit" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="IdPokemon" />
+
+            <partial name="_FormFilds" />
+
+            <div class="row mb-3">
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <partial name="~/Views/Shared/Icons/_Pencil-Fill.cshtml" />
+                        Editar Pokémon
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a asp-action="Index" class="btn btn-outline-primary">Ir a la lista</a>
+        </div>
+    </div>
+
+    <div class="col">
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

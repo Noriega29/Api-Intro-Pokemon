@@ -1,0 +1,21 @@
+﻿@model Pokemon
+
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
+<h1>¿Deseas borrar a @Model.Name?</h1>
+<hr />
+
+<partial name="_DetailsFields" />
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="IdPokemon" />
+    <button class="btn btn-danger" type="submit">
+        <partial name="~/Views/Shared/Icons/_Trash.cshtml" />
+        Borrar
+    </button>
+    <a asp-action="Index" class="btn btn-outline-primary">
+        Ir a la lista
+    </a>
+</form>
