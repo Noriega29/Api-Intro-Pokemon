@@ -30,12 +30,12 @@
         {
             if (Model.SegundoTipo == 0)
             {
-                <div class="row justify-content-between g-2">
-                    <div class="col-auto">
+                <div class="row">
+                    <div class="col">
                         <label asp-for="SegundoTipo" class="control-label" for="tipo2"></label>
                     </div>
 
-                    <div class="col-2">
+                    <div class="col position-right">
                         <input id="checkTipo2" class="form-check-input" type="checkbox" onchange="activateInputTipo2()">
                     </div>
                 </div>
@@ -46,12 +46,12 @@
             }
             else
             {
-                <div class="row justify-content-between g-2">
-                    <div class="col-auto">
+                <div class="row">
+                    <div class="col">
                         <label asp-for="SegundoTipo" class="control-label" for="tipo2"></label>
                     </div>
 
-                    <div class="col-2">
+                    <div class="col position-right">
                         <input id="checkTipo2" class="form-check-input" type="checkbox" checked onchange="activateInputTipo2()">
                     </div>
                 </div>
@@ -62,12 +62,12 @@
             }
         }else
         {
-            <div class="row justify-content-between g-2">
-                <div class="col-auto">
+            <div class="row">
+                <div class="col">
                     <label asp-for="SegundoTipo" class="control-label" for="tipo2"></label>
                 </div>
 
-                <div class="col-2">
+                <div class="col position-right">
                     <input id="checkTipo2" class="form-check-input" type="checkbox" onchange="activateInputTipo2()">
                 </div>
             </div>

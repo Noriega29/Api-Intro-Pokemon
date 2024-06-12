@@ -33,7 +33,7 @@ namespace PokedexClient.Controllers
                 }
                 else
                 {
-                    return NotFound();
+                    return View("_NotFoundPokemon");
                 }
             }
             catch (SocketException)
@@ -59,7 +59,7 @@ namespace PokedexClient.Controllers
                 }
                 else
                 {
-                    return NotFound();
+                    return View("_NotFoundPokemon");
                 }
             }
             catch (SocketException)
@@ -95,6 +95,13 @@ namespace PokedexClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PokemonViewModel viewModel)
         {
+            if (viewModel.PrimerTipo == viewModel.SegundoTipo)
+            {
+                TempData["ErrorCode"] = "409x4";
+                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
+                return View(viewModel);
+            }
+
             try
             {
                 if (ModelState.IsValid)
@@ -102,6 +109,8 @@ namespace PokedexClient.Controllers
                     var response = await _pokemonService.CreatePokemon(viewModel);
                     if (response.IsSuccessStatusCode)
                     {
+                        TempData["Pokemon"] = viewModel.Name;
+                        TempData["Action"] = "Created";
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -113,15 +122,18 @@ namespace PokedexClient.Controllers
                         {
                             if (errorMessage.Status == "409x2")
                             {
-                                return View("_PartialViewAlert", AlertMessages.Error409x2(viewModel.Numero));
+                                TempData["ErrorCode"] = "409x2";
+                                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
                             }
                             if (errorMessage.Status == "409x3")
                             {
-                                return View("_PartialViewAlert", AlertMessages.Error409x3(viewModel.Name));
+                                TempData["ErrorCode"] = "409x3";
+                                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
                             }
                         }
                     }
                 }
+                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
                 return View(viewModel);
             }
             catch (SocketException)
@@ -147,7 +159,7 @@ namespace PokedexClient.Controllers
                 }
                 else
                 {
-                    return NotFound();
+                    return View("_NotFoundPokemon");
                 }
 
                 List<int> tiposID = new List<int>();
@@ -184,11 +196,18 @@ namespace PokedexClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PokemonViewModel viewModel)
         {
+            if (viewModel.PrimerTipo == viewModel.SegundoTipo)
+            {
+                TempData["ErrorCode"] = "409x4";
+                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
+                return View(viewModel);
+            }
+
             try
             {
                 if (id != viewModel.IdPokemon)
                 {
-                    return NotFound();
+                    return View("_NotFoundPokemon");
                 }
 
                 if (ModelState.IsValid)
@@ -196,6 +215,8 @@ namespace PokedexClient.Controllers
                     var response = await _pokemonService.EditPokemon(id, viewModel);
                     if (response.IsSuccessStatusCode)
                     {
+                        TempData["Pokemon"] = viewModel.Name;
+                        TempData["Action"] = "Edited";
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -207,15 +228,18 @@ namespace PokedexClient.Controllers
                         {
                             if (errorMessage.Status == "409x2")
                             {
-                                return View("_PartialViewAlert", AlertMessages.Error409x2(viewModel.Numero));
+                                TempData["ErrorCode"] = "409x2";
+                                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
                             }
                             if (errorMessage.Status == "409x3")
                             {
-                                return View("_PartialViewAlert", AlertMessages.Error409x3(viewModel.Name));
+                                TempData["ErrorCode"] = "409x3";
+                                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
                             }
                         }
                     }
                 }
+                ViewData["Tipos"] = new SelectList(await _tiposService.GetTiposList(), "Id", "Nombre");
                 return View(viewModel);
             }
             catch (SocketException)
@@ -241,7 +265,7 @@ namespace PokedexClient.Controllers
                 }
                 else
                 {
-                    return NotFound();
+                    return View("_NotFoundPokemon");
                 }
             }
             catch (SocketException)
@@ -261,7 +285,20 @@ namespace PokedexClient.Controllers
         {
             try
             {
+                var response = await _pokemonService.GetPokemonById(id);
+                if (response.IsSuccessStatusCode)
+                {
+                    var pokemon = await Deserialize.DeserializePokemonAsync(response);
+                    TempData["Pokemon"] = pokemon.Name;
+                }
+                else
+                {
+                    return View("_NotFoundPokemon");
+                }
+
                 await _pokemonService.DeletePokemon(id);
+                TempData["Action"] = "Deleted";
+
                 return RedirectToAction(nameof(Index));
             }
             catch (SocketException)
