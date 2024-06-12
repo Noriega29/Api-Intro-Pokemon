@@ -84,6 +84,10 @@ namespace PokedexClient.Services
             {
                 throw;
             }
+            catch (ArgumentException)
+            {
+                throw;
+            }
         }
 
         // POST: pokemon/id
@@ -117,6 +121,10 @@ namespace PokedexClient.Services
                 throw;
             }
             catch (HttpRequestException)
+            {
+                throw;
+            }
+            catch (ArgumentException)
             {
                 throw;
             }

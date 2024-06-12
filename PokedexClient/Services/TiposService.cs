@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PokedexClient.Helpers;
 using PokedexClient.Models;
 using System.Net.Sockets;
 
