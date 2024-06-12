@@ -1,0 +1,7 @@
+﻿@if (TempData.ContainsKey("Action") && TempData["Action"]?.ToString() == "Deleted")
+{
+    <div id="danger" class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        Has borrado a <strong>@TempData["Pokemon"]</strong> de la pokédex con exito.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

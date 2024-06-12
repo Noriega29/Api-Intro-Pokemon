@@ -1,0 +1,26 @@
+﻿@using PokedexClient.Models.ViewModels
+@model PokemonViewModel
+
+@if (TempData.ContainsKey("ErrorCode") && TempData["ErrorCode"]?.ToString() == "409x2")
+{
+    <div class="alert alert-warning alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        Ya hay un Pokémon en la Pokédex registrado con el número: <strong>@Model.Numero</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData.ContainsKey("ErrorCode") && TempData["ErrorCode"]?.ToString() == "409x3")
+{
+    <div class="alert alert-warning alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        <strong>@Model.Name</strong> ya se encuentra registrado en la Pokédex
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData.ContainsKey("ErrorCode") && TempData["ErrorCode"]?.ToString() == "409x4")
+{
+    <div class="alert alert-warning alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        El Pokémon <strong>No</strong> puede tener dos tipos <strong>Iguales</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

@@ -1,0 +1,14 @@
+﻿@if (TempData.ContainsKey("Action") && TempData["Action"]?.ToString() == "Created")
+{
+    <div id="success" class="alert alert-success alert-dismissible fade show  position-fixed top-0 end-0 m-3" role="alert">
+        <strong>@TempData["Pokemon"]</strong> agregado a la pokédex exitosamente.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData.ContainsKey("Action") && TempData["Action"]?.ToString() == "Edited")
+{
+    <div id="success" class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3" role="alert">
+        <strong>@TempData["Pokemon"]</strong> editado exitosamente.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
